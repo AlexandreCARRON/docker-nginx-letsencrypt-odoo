@@ -4,7 +4,7 @@ services:
   nginx:
     restart: always
     image: nginx
-    container_name: nginx
+    container_name: nginx-atil
     ports:
       - "80:80"
       - "443:443"
@@ -17,7 +17,7 @@ services:
   nginx-gen:
     restart: always
     image: jwilder/docker-gen
-    container_name: nginx-gen
+    container_name: nginx-gen-atil
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
       - "./volumes/proxy/templates/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro"
@@ -28,7 +28,7 @@ services:
   letsencrypt-nginx-proxy-companion:
     restart: always
     image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt-nginx-proxy-companion-atil
     volumes_from:
       - nginx
     volumes:
@@ -39,8 +39,8 @@ services:
 
   web:
     restart: always
-    image: odoo:11
-    container_name: odoo
+    image: odoo:17
+    container_name: odoo-atil-v17-compose
     depends_on:
       - db
     ports:
@@ -53,14 +53,14 @@ services:
       - VIRTUAL_HOST=odoo, odoochat
       - VIRTUAL_NETWORK=nginx-proxy
       - VIRTUAL_PORT=8069, 8072
-      - LETSENCRYPT_HOST=samplewebsite.example.com
-      - LETSENCRYPT_EMAIL=test@example.com
+      - LETSENCRYPT_HOST=atilfrance.fr
+      - LETSENCRYPT_EMAIL=archi.carron@gmail.com
   db:
     restart: always
-    image: postgres:9.6
+    image: postgres:16
     environment:
-      - POSTGRES_PASSWORD=sample_password
-      - POSTGRES_USER=sample_user
+      - POSTGRES_PASSWORD=Aqwxsz56!
+      - POSTGRES_USER=odoo_carron
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - odoo-db-data:/var/lib/postgresql/data/pgdata
